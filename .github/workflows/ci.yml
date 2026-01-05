@@ -22,7 +22,7 @@ jobs:
 
     steps:
     - name: Harden Runner
-      uses: step-security/harden-runner@f4a75cfd619ee5ce8d5b864b0d183aff3c69b55a
+      uses: step-security/harden-runner@20cf305ff2072d973412fa9b1e3a4f227bda3c76
       with:
         egress-policy: block
         allowed-endpoints: >
@@ -34,9 +34,14 @@ jobs:
           pkg-containers.githubusercontent.com:443
           release-assets.githubusercontent.com:443
           check.trivy.dev:443
+          get.trivy.dev:443
+          crates.io:443
+          index.crates.io:443
+          static.crates.io:443
+          downloads.aquasec.com:443
 
     - name: Checkout the code
-      uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v2
+      uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v2
       with:
         fetch-depth: 0
 
@@ -73,7 +78,7 @@ jobs:
 
     steps:
     - name: Harden Runner
-      uses: step-security/harden-runner@f4a75cfd619ee5ce8d5b864b0d183aff3c69b55a
+      uses: step-security/harden-runner@20cf305ff2072d973412fa9b1e3a4f227bda3c76
       with:
         egress-policy: block
         allowed-endpoints: >
@@ -85,7 +90,7 @@ jobs:
           static.crates.io:443
           api.github.com:443
 
-    - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
+    - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8
       with:
         fetch-depth: 0
 
@@ -95,7 +100,7 @@ jobs:
         toolchain: stable
         components: rustfmt
 
-    - uses: step-security/rust-cache@934d90e2c411daeca7b3e18bd45712c53a6b9a75 # v2.8.1
+    - uses: step-security/rust-cache@f8fba7098297c8c53a7c9a30575ec2ad4ad85056 # v2.8.2
 
     - name: Run cargo check
       uses: actions-rs/cargo@844f36862e911db73fe0815f00a4a2602c279505 # v1.0.3
@@ -121,7 +126,7 @@ jobs:
     needs: security-audit
     steps:
     - name: Harden Runner
-      uses: step-security/harden-runner@f4a75cfd619ee5ce8d5b864b0d183aff3c69b55a
+      uses: step-security/harden-runner@20cf305ff2072d973412fa9b1e3a4f227bda3c76
       with:
         egress-policy: block
         allowed-endpoints: >
@@ -132,7 +137,7 @@ jobs:
           static.rust-lang.org:443
           api.github.com:443
 
-    - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
+    - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8
       with:
         fetch-depth: 0
 
@@ -156,7 +161,7 @@ jobs:
     needs: security-audit
     steps:
     - name: Harden Runner
-      uses: step-security/harden-runner@f4a75cfd619ee5ce8d5b864b0d183aff3c69b55a
+      uses: step-security/harden-runner@20cf305ff2072d973412fa9b1e3a4f227bda3c76
       with:
         egress-policy: block
         allowed-endpoints: >
@@ -164,7 +169,7 @@ jobs:
           static.rust-lang.org:443
           api.github.com:443
 
-    - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
+    - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8
       with:
         fetch-depth: 0
 
@@ -193,12 +198,12 @@ jobs:
 
     steps:
     - name: Harden Runner
-      uses: step-security/harden-runner@f4a75cfd619ee5ce8d5b864b0d183aff3c69b55a
+      uses: step-security/harden-runner@20cf305ff2072d973412fa9b1e3a4f227bda3c76
       with:
         egress-policy: audit
 
     - name: Checkout the code
-      uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v3.0.2
+      uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v3.0.2
       with:
         fetch-depth: 0
 
