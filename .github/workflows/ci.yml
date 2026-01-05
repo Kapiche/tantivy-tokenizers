@@ -34,6 +34,11 @@ jobs:
           pkg-containers.githubusercontent.com:443
           release-assets.githubusercontent.com:443
           check.trivy.dev:443
+          get.trivy.dev:443
+          crates.io:443
+          index.crates.io:443
+          static.crates.io:443
+          downloads.aquasec.com:443
 
     - name: Checkout the code
       uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v2
