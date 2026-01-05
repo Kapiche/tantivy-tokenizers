@@ -120,10 +120,6 @@ All tests include comprehensive Unicode edge cases for punctuation handling and 
 cargo doc --open
 ```
 
-## License
-
-MIT
-
 ## Credits
 
 Developed by Kapiche for use with the Tantivy search engine.
