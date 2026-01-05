@@ -61,13 +61,13 @@ fn is_disallowed_category(c: &char) -> bool {
     // GeneralCategoryGroup::Number
     // GeneralCategoryGroup::Symbol (includes emoji)
 
-    match category {
-        GeneralCategoryGroup::Mark => true,
-        GeneralCategoryGroup::Punctuation => true,
-        GeneralCategoryGroup::Separator => true,
-        GeneralCategoryGroup::Other => true,
-        _ => false,
-    }
+    matches!(
+        category,
+        GeneralCategoryGroup::Mark
+            | GeneralCategoryGroup::Punctuation
+            | GeneralCategoryGroup::Separator
+            | GeneralCategoryGroup::Other
+    )
 }
 
 pub struct OuterPunctuationFilterTokenStream<T> {
@@ -80,27 +80,28 @@ pub struct OuterPunctuationFilterTokenStream<T> {
 // Trims the token stream of any leading/ trailing punctuations.
 impl<T: TokenStream> TokenStream for OuterPunctuationFilterTokenStream<T> {
     fn advance(&mut self) -> bool {
-        while self.tail.advance() {
-            let token_text = &self.tail.token().text;
-
-            // Strip leading punctuation
-            let token_text = token_text.trim_start_matches(|c: char| {
-                (c.is_ascii_punctuation() || is_disallowed_category(&c))
-                    && !self.leading_allow.contains(&c)
-            });
-
-            // Strip trailing punctuation
-            let token_text = token_text.trim_end_matches(|c: char| {
-                c.is_ascii_punctuation() || is_disallowed_category(&c)
-            });
-
-            self.buffer.clear();
-            self.buffer.push_str(token_text);
-            // Replace the token text with the trimmed word
-            mem::swap(&mut self.tail.token_mut().text, &mut self.buffer);
-            return true;
+        if !self.tail.advance() {
+            return false;
         }
-        false
+
+        let token_text = &self.tail.token().text;
+
+        // Strip leading punctuation
+        let token_text = token_text.trim_start_matches(|c: char| {
+            (c.is_ascii_punctuation() || is_disallowed_category(&c))
+                && !self.leading_allow.contains(&c)
+        });
+
+        // Strip trailing punctuation
+        let token_text = token_text.trim_end_matches(|c: char| {
+            c.is_ascii_punctuation() || is_disallowed_category(&c)
+        });
+
+        self.buffer.clear();
+        self.buffer.push_str(token_text);
+        // Replace the token text with the trimmed word
+        mem::swap(&mut self.tail.token_mut().text, &mut self.buffer);
+        true
     }
 
     fn token(&self) -> &Token {
