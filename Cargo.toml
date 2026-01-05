@@ -8,7 +8,7 @@ repository = "https://github.com/Kapiche/tantivy-tokenizers"
 license = "MIT"
 
 [dependencies]
-tantivy = "0.22"
+tantivy = "0.25"
 unicode-properties = "0.1"
 
 [dev-dependencies]
