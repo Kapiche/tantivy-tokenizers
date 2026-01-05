@@ -17,10 +17,7 @@ pub struct OuterPunctuationFilter {
 impl TokenFilter for OuterPunctuationFilter {
     type Tokenizer<T: Tokenizer> = OuterPunctuationFilterWrapper<T>;
 
-    fn transform<T: Tokenizer>(
-        self,
-        tokenizer: T,
-    ) -> OuterPunctuationFilterWrapper<T> {
+    fn transform<T: Tokenizer>(self, tokenizer: T) -> OuterPunctuationFilterWrapper<T> {
         OuterPunctuationFilterWrapper {
             leading_allow: self.leading_allow,
             inner: tokenizer,
@@ -42,8 +39,7 @@ pub struct OuterPunctuationFilterWrapper<T> {
 }
 
 impl<T: Tokenizer> Tokenizer for OuterPunctuationFilterWrapper<T> {
-    type TokenStream<'a> =
-        OuterPunctuationFilterTokenStream<T::TokenStream<'a>>;
+    type TokenStream<'a> = OuterPunctuationFilterTokenStream<T::TokenStream<'a>>;
 
     fn token_stream<'a>(&'a mut self, text: &'a str) -> Self::TokenStream<'a> {
         OuterPunctuationFilterTokenStream {
@@ -61,13 +57,13 @@ fn is_disallowed_category(c: &char) -> bool {
     // GeneralCategoryGroup::Number
     // GeneralCategoryGroup::Symbol (includes emoji)
 
-    match category {
-        GeneralCategoryGroup::Mark => true,
-        GeneralCategoryGroup::Punctuation => true,
-        GeneralCategoryGroup::Separator => true,
-        GeneralCategoryGroup::Other => true,
-        _ => false,
-    }
+    matches!(
+        category,
+        GeneralCategoryGroup::Mark
+            | GeneralCategoryGroup::Punctuation
+            | GeneralCategoryGroup::Separator
+            | GeneralCategoryGroup::Other
+    )
 }
 
 pub struct OuterPunctuationFilterTokenStream<T> {
@@ -80,27 +76,27 @@ pub struct OuterPunctuationFilterTokenStream<T> {
 // Trims the token stream of any leading/ trailing punctuations.
 impl<T: TokenStream> TokenStream for OuterPunctuationFilterTokenStream<T> {
     fn advance(&mut self) -> bool {
-        while self.tail.advance() {
-            let token_text = &self.tail.token().text;
-
-            // Strip leading punctuation
-            let token_text = token_text.trim_start_matches(|c: char| {
-                (c.is_ascii_punctuation() || is_disallowed_category(&c))
-                    && !self.leading_allow.contains(&c)
-            });
-
-            // Strip trailing punctuation
-            let token_text = token_text.trim_end_matches(|c: char| {
-                c.is_ascii_punctuation() || is_disallowed_category(&c)
-            });
-
-            self.buffer.clear();
-            self.buffer.push_str(token_text);
-            // Replace the token text with the trimmed word
-            mem::swap(&mut self.tail.token_mut().text, &mut self.buffer);
-            return true;
+        if !self.tail.advance() {
+            return false;
         }
-        false
+
+        let token_text = &self.tail.token().text;
+
+        // Strip leading punctuation
+        let token_text = token_text.trim_start_matches(|c: char| {
+            (c.is_ascii_punctuation() || is_disallowed_category(&c))
+                && !self.leading_allow.contains(&c)
+        });
+
+        // Strip trailing punctuation
+        let token_text = token_text
+            .trim_end_matches(|c: char| c.is_ascii_punctuation() || is_disallowed_category(&c));
+
+        self.buffer.clear();
+        self.buffer.push_str(token_text);
+        // Replace the token text with the trimmed word
+        mem::swap(&mut self.tail.token_mut().text, &mut self.buffer);
+        true
     }
 
     fn token(&self) -> &Token {
@@ -119,13 +115,7 @@ pub mod tests {
 
     /// This is a function that can be used in tests and doc tests
     /// to assert a token's correctness.
-    pub fn assert_token(
-        token: &Token,
-        position: usize,
-        text: &str,
-        from: usize,
-        to: usize,
-    ) {
+    pub fn assert_token(token: &Token, position: usize, text: &str, from: usize, to: usize) {
         assert_eq!(
             token.position, position,
             "expected position {} but {:?}",
@@ -220,30 +210,30 @@ pub mod tests {
             ("tree🌳@", "tree🌳"),
             // Unicode Punctuation with odd characters and quotes
             ("-tree 🌳", "tree 🌳"),
-            ("\u{2014}tree 🌳", "tree 🌳"),  // —
-            ("\u{2e17}tree 🌳", "tree 🌳"),  // ⸗
-            ("\u{2e1a}tree 🌳", "tree 🌳"),  // ⸚
-            ("\u{2e3a}tree 🌳", "tree 🌳"),  // ⸺
-            ("\u{301c}tree 🌳", "tree 🌳"),  // 〜
-            ("\u{3030}tree 🌳", "tree 🌳"),  // 〰
-            ("\u{ab}tree 🌳\u{bb}", "tree 🌳"),  // «»
+            ("\u{2014}tree 🌳", "tree 🌳"),     // —
+            ("\u{2e17}tree 🌳", "tree 🌳"),     // ⸗
+            ("\u{2e1a}tree 🌳", "tree 🌳"),     // ⸚
+            ("\u{2e3a}tree 🌳", "tree 🌳"),     // ⸺
+            ("\u{301c}tree 🌳", "tree 🌳"),     // 〜
+            ("\u{3030}tree 🌳", "tree 🌳"),     // 〰
+            ("\u{ab}tree 🌳\u{bb}", "tree 🌳"), // «»
             ("'tree 🌳", "tree 🌳"),
-            ("\u{201c}tree 🌳", "tree 🌳"),  // "
-            ("\u{2e04}tree 🌳", "tree 🌳"),  // ⸄
-            ("\u{2e09}tree 🌳", "tree 🌳"),  // ⸉
-            ("\u{2768}tree 🌳", "tree 🌳"),  // ❨
-            ("\u{2e26}tree 🌳", "tree 🌳"),  // ⸦
-            ("\u{300e}tree 🌳\u{300f}", "tree 🌳"),  // 『』
-            ("\u{bf}tree 🌳", "tree 🌳"),  // ¿
+            ("\u{201c}tree 🌳", "tree 🌳"),         // "
+            ("\u{2e04}tree 🌳", "tree 🌳"),         // ⸄
+            ("\u{2e09}tree 🌳", "tree 🌳"),         // ⸉
+            ("\u{2768}tree 🌳", "tree 🌳"),         // ❨
+            ("\u{2e26}tree 🌳", "tree 🌳"),         // ⸦
+            ("\u{300e}tree 🌳\u{300f}", "tree 🌳"), // 『』
+            ("\u{bf}tree 🌳", "tree 🌳"),           // ¿
             // Greek question mark NOT semicolon
             (";tree 🌳", "tree 🌳"),
-            ("\u{2021}tree 🌳", "tree 🌳"),  // ‡
-            ("\u{2025}tree 🌳", "tree 🌳"),  // ‥
-            ("\u{2034}tree 🌳", "tree 🌳"),  // ‴
-            ("\u{203b}tree 🌳", "tree 🌳"),  // ※
-            ("\u{2042}tree 🌳", "tree 🌳"),  // ⁂
-            ("\u{205c}tree 🌳", "tree 🌳"),  // ⁜
-            ("\u{fe45}tree 🌳", "tree 🌳"),  // ﹅
+            ("\u{2021}tree 🌳", "tree 🌳"), // ‡
+            ("\u{2025}tree 🌳", "tree 🌳"), // ‥
+            ("\u{2034}tree 🌳", "tree 🌳"), // ‴
+            ("\u{203b}tree 🌳", "tree 🌳"), // ※
+            ("\u{2042}tree 🌳", "tree 🌳"), // ⁂
+            ("\u{205c}tree 🌳", "tree 🌳"), // ⁜
+            ("\u{fe45}tree 🌳", "tree 🌳"), // ﹅
         ];
         for (input, expected) in cases {
             let out = token_full_pipeline(input);
@@ -264,10 +254,9 @@ pub mod tests {
     }
 
     fn token_stream_helper(text: &str) -> Vec<Token> {
-        let mut analyzer =
-            TextAnalyzer::builder(WhitespaceTokenizer::default())
-                .filter(OuterPunctuationFilter::new(vec!['#', '@']))
-                .build();
+        let mut analyzer = TextAnalyzer::builder(WhitespaceTokenizer::default())
+            .filter(OuterPunctuationFilter::new(vec!['#', '@']))
+            .build();
         let mut token_stream = analyzer.token_stream(text);
         let mut tokens = vec![];
         let mut add_token = |token: &Token| {

@@ -14,10 +14,7 @@ pub struct PossessiveContractionFilter;
 impl TokenFilter for PossessiveContractionFilter {
     type Tokenizer<T: Tokenizer> = PossessiveContractionFilterWrapper<T>;
 
-    fn transform<T: Tokenizer>(
-        self,
-        tokenizer: T,
-    ) -> PossessiveContractionFilterWrapper<T> {
+    fn transform<T: Tokenizer>(self, tokenizer: T) -> PossessiveContractionFilterWrapper<T> {
         PossessiveContractionFilterWrapper { inner: tokenizer }
     }
 }
@@ -28,8 +25,7 @@ pub struct PossessiveContractionFilterWrapper<T> {
 }
 
 impl<T: Tokenizer> Tokenizer for PossessiveContractionFilterWrapper<T> {
-    type TokenStream<'a> =
-        PossessiveContractionFilterTokenStream<T::TokenStream<'a>>;
+    type TokenStream<'a> = PossessiveContractionFilterTokenStream<T::TokenStream<'a>>;
 
     fn token_stream<'a>(&'a mut self, text: &'a str) -> Self::TokenStream<'a> {
         PossessiveContractionFilterTokenStream {
@@ -47,10 +43,7 @@ pub struct PossessiveContractionFilterTokenStream<T> {
 
 // Creates desired string with possessive contractions substituted in the output string.
 // Returns True if replacements were made, false otherwise.
-pub fn replace_possessive_contractions(
-    text: &str,
-    output: &mut String,
-) -> bool {
+pub fn replace_possessive_contractions(text: &str, output: &mut String) -> bool {
     output.clear();
     let mut replaced = false;
     let mut temp = String::from(text);
@@ -73,10 +66,7 @@ impl<T: TokenStream> TokenStream for PossessiveContractionFilterTokenStream<T> {
             return false;
         }
         // replace possessive contractions if there are substitutions
-        if replace_possessive_contractions(
-            &self.tail.token().text,
-            &mut self.buffer,
-        ) {
+        if replace_possessive_contractions(&self.tail.token().text, &mut self.buffer) {
             mem::swap(&mut self.tail.token_mut().text, &mut self.buffer);
         }
         true
@@ -104,8 +94,7 @@ mod tests {
         assert_eq!(tokens.len(), 1);
         assert_token(&tokens[0], 0, "goku", 0, 6);
 
-        let tokens =
-            token_stream_helper("your\u{2019}s mcdonald\u{02BC}s bee's");
+        let tokens = token_stream_helper("your\u{2019}s mcdonald\u{02BC}s bee's");
         assert_eq!(tokens.len(), 3);
 
         assert_token(&tokens[0], 0, "your", 0, 8);
@@ -118,10 +107,9 @@ mod tests {
     }
 
     fn token_stream_helper(text: &str) -> Vec<Token> {
-        let mut analyzer =
-            TextAnalyzer::builder(WhitespaceTokenizer::default())
-                .filter(PossessiveContractionFilter)
-                .build();
+        let mut analyzer = TextAnalyzer::builder(WhitespaceTokenizer::default())
+            .filter(PossessiveContractionFilter)
+            .build();
         let mut token_stream = analyzer.token_stream(text);
         let mut tokens = vec![];
         let mut add_token = |token: &Token| {
