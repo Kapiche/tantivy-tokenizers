@@ -1,5 +1,5 @@
-use tantivy::tokenizer::{LowerCaser, TextAnalyzer, WhitespaceTokenizer};
 use crate::filters::{OuterPunctuationFilter, PossessiveContractionFilter};
+use tantivy::tokenizer::{LowerCaser, TextAnalyzer, WhitespaceTokenizer};
 
 /// Creates the Kapiche tokenizer analyzer.
 /// Combines WhitespaceTokenizer with OuterPunctuationFilter and PossessiveContractionFilter.

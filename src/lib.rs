@@ -25,11 +25,11 @@
 //! assert_eq!(count, 3); // ["John", "#hashtag", "@mention"]
 //! ```
 
-pub mod filters;
 pub mod analyzers;
+pub mod filters;
 pub mod utils;
 
 // Re-export commonly used items for convenience
-pub use filters::{OuterPunctuationFilter, PossessiveContractionFilter};
 pub use analyzers::{kapiche_analyzer, kapiche_analyzer_lower};
+pub use filters::{OuterPunctuationFilter, PossessiveContractionFilter};
 pub use utils::count_tokens;
