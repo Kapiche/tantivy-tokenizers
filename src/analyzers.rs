@@ -1,4 +1,6 @@
-use crate::filters::{get_stopwords_filter_en, OuterPunctuationFilter, PossessiveContractionFilter};
+use crate::filters::{
+    get_stopwords_filter_en, OuterPunctuationFilter, PossessiveContractionFilter,
+};
 use tantivy::tokenizer::{LowerCaser, StopWordFilter, TextAnalyzer, WhitespaceTokenizer};
 
 /// Creates the Kapiche tokenizer analyzer.
