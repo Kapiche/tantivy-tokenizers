@@ -27,7 +27,13 @@ fn contains_apostrophe(s: &str) -> bool {
 /// Replace all apostrophe variants with a specific apostrophe character.
 fn replace_apostrophes(s: &str, replacement: char) -> String {
     s.chars()
-        .map(|c| if APOSTROPHES.contains(&c) { replacement } else { c })
+        .map(|c| {
+            if APOSTROPHES.contains(&c) {
+                replacement
+            } else {
+                c
+            }
+        })
         .collect()
 }
 
@@ -146,7 +152,7 @@ mod tests {
         assert_eq!(expanded.len(), 17);
         // First 8 should be can't variants
         assert_eq!(expanded[0], "can't"); // U+0027
-        // Then hello
+                                          // Then hello
         assert_eq!(expanded[8], "hello");
         // Then 8 don't variants
         assert_eq!(expanded[9], "don't"); // U+0027
