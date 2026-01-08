@@ -9,7 +9,9 @@ pub const CONTRACTION_PATTERNS: [&str; 8] = [
     "\u{FF07}s",
 ];
 
-pub const STOPWORDS_EN: [&str; 334] = [
+/// Base English stopwords (before apostrophe expansion).
+/// Words with apostrophes will be expanded to include all unicode variants.
+pub const STOPWORDS_EN_BASE: [&str; 334] = [
     "a",
     "about",
     "above",
