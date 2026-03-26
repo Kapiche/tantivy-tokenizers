@@ -41,7 +41,7 @@ jobs:
           downloads.aquasec.com:443
 
     - name: Checkout the code
-      uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v2
+      uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v2
       with:
         fetch-depth: 0
 
@@ -90,7 +90,7 @@ jobs:
           static.crates.io:443
           api.github.com:443
 
-    - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8
+    - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
       with:
         fetch-depth: 0
 
@@ -100,7 +100,7 @@ jobs:
         toolchain: stable
         components: rustfmt
 
-    - uses: step-security/rust-cache@f8fba7098297c8c53a7c9a30575ec2ad4ad85056 # v2.8.2
+    - uses: step-security/rust-cache@9be15b830520fab0ec3939586e917e4855cf76bd # v2.8.3
 
     - name: Run cargo check
       uses: actions-rs/cargo@844f36862e911db73fe0815f00a4a2602c279505 # v1.0.3
@@ -137,7 +137,7 @@ jobs:
           static.rust-lang.org:443
           api.github.com:443
 
-    - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8
+    - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
       with:
         fetch-depth: 0
 
@@ -169,7 +169,7 @@ jobs:
           static.rust-lang.org:443
           api.github.com:443
 
-    - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8
+    - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
       with:
         fetch-depth: 0
 
@@ -203,7 +203,7 @@ jobs:
         egress-policy: audit
 
     - name: Checkout the code
-      uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v3.0.2
+      uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v3.0.2
       with:
         fetch-depth: 0
 
