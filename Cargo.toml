@@ -1,6 +1,6 @@
 [package]
 name = "tantivy-tokenizers"
-version = "0.1.0"
+version = "0.26.0"
 edition = "2021"
 authors = ["Kapiche <dev@kapiche.com>"]
 description = "Custom tokenizers and filters for Tantivy, used by Kapiche"
