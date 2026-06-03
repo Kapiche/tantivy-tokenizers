@@ -22,7 +22,7 @@ jobs:
 
     steps:
     - name: Harden Runner
-      uses: step-security/harden-runner@fe104658747b27e96e4f7e80cd0a94068e53901d
+      uses: step-security/harden-runner@8d3c67de8e2fe68ef647c8db1e6a09f647780f40
       with:
         egress-policy: block
         allowed-endpoints: >
@@ -48,7 +48,7 @@ jobs:
     # Not a dupe: this is for humans
     - name: Run vulnerability scanner in repo mode
       if: github.actor != 'dependabot[bot]'
-      uses: aquasecurity/trivy-action@57a97c7e7821a5776cebc9bb87c984fa69cba8f1
+      uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25
       with:
         scan-type: 'fs'
         ignore-unfixed: true
@@ -60,7 +60,7 @@ jobs:
     # Not a dupe: this is for dependabot
     - name: Run vulnerability scanner in repo mode
       if: github.actor == 'dependabot[bot]'
-      uses: aquasecurity/trivy-action@57a97c7e7821a5776cebc9bb87c984fa69cba8f1
+      uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25
       with:
         scan-type: 'fs'
         ignore-unfixed: false
@@ -78,7 +78,7 @@ jobs:
 
     steps:
     - name: Harden Runner
-      uses: step-security/harden-runner@fe104658747b27e96e4f7e80cd0a94068e53901d
+      uses: step-security/harden-runner@8d3c67de8e2fe68ef647c8db1e6a09f647780f40
       with:
         egress-policy: block
         allowed-endpoints: >
@@ -126,7 +126,7 @@ jobs:
     needs: security-audit
     steps:
     - name: Harden Runner
-      uses: step-security/harden-runner@fe104658747b27e96e4f7e80cd0a94068e53901d
+      uses: step-security/harden-runner@8d3c67de8e2fe68ef647c8db1e6a09f647780f40
       with:
         egress-policy: block
         allowed-endpoints: >
@@ -161,7 +161,7 @@ jobs:
     needs: security-audit
     steps:
     - name: Harden Runner
-      uses: step-security/harden-runner@fe104658747b27e96e4f7e80cd0a94068e53901d
+      uses: step-security/harden-runner@8d3c67de8e2fe68ef647c8db1e6a09f647780f40
       with:
         egress-policy: block
         allowed-endpoints: >
@@ -198,7 +198,7 @@ jobs:
 
     steps:
     - name: Harden Runner
-      uses: step-security/harden-runner@fe104658747b27e96e4f7e80cd0a94068e53901d
+      uses: step-security/harden-runner@8d3c67de8e2fe68ef647c8db1e6a09f647780f40
       with:
         egress-policy: audit
 
