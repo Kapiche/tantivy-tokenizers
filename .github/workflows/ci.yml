@@ -41,7 +41,7 @@ jobs:
           downloads.aquasec.com:443
 
     - name: Checkout the code
-      uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v2
+      uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v2
       with:
         fetch-depth: 0
 
@@ -90,7 +90,7 @@ jobs:
           static.crates.io:443
           api.github.com:443
 
-    - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
       with:
         fetch-depth: 0
 
@@ -137,7 +137,7 @@ jobs:
           static.rust-lang.org:443
           api.github.com:443
 
-    - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
       with:
         fetch-depth: 0
 
@@ -169,7 +169,7 @@ jobs:
           static.rust-lang.org:443
           api.github.com:443
 
-    - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
       with:
         fetch-depth: 0
 
@@ -203,7 +203,7 @@ jobs:
         egress-policy: audit
 
     - name: Checkout the code
-      uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v3.0.2
+      uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v3.0.2
       with:
         fetch-depth: 0
 
