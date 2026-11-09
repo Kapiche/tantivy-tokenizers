@@ -66,7 +66,7 @@ Add this to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-tantivy-tokenizers = { git = "https://github.com/Kapiche/tantivy-tokenizers", tag = "v0.1.0" }
+tantivy-tokenizers = { git = "https://github.com/Kapiche/tantivy-tokenizers", tag = "v0.27.0" }
 ```
 
 ### With tantivy-py

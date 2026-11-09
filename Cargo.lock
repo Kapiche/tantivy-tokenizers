@@ -967,7 +967,7 @@ dependencies = [
 
 [[package]]
 name = "tantivy-tokenizers"
-version = "0.26.0"
+version = "0.27.0"
 dependencies = [
  "tantivy",
  "unicode-properties",
